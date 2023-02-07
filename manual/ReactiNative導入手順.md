@@ -51,3 +51,41 @@ npxの確認が行えない場合は以下のコマンドを実行
 ```
 npm install -g npx
 ```
+
+0.実機確認用のアプリをスマホにインストール
+iOS
+https://apps.apple.com/jp/app/expo-client/id982107779
+
+Android
+https://play.google.com/store/apps/details?id=host.exp.exponent&pli=1
+
+1.expoをインストール
+```
+npm install -g expo-cli
+expo --version
+```
+
+2.expoプロジェクトの作成
+任意のフォルダで以下のコマンドを実行
+```
+expo init <任意のプロジェクト名>
+// blank (TypeScript)を選択
+```
+
+3.expoアプリの作成
+プロジェクトのフォルダに移動し、expoアプリを立ち上げ
+```
+cd <任意のプロジェクト名>
+expo start
+```
+
+4.QRコードをスマホで読み込み
+0でインストールしたアプリがあれば、カメラアプリから自動的にアプリを立ち上げてくれる。
+
+
+
+
+```
+ npm cache clean --force
+npm fund
+npm audit fix --force
