@@ -9,6 +9,9 @@
                 "<node_internals>/**"
             ],
             "program": "${workspaceFolder}/index.ts",
+            "env": {
+                "NODE_ENV": "development"
+            },
             "preLaunchTask": "tsc: build - tsconfig.json",
             "outFiles": [
                 "${workspaceFolder}/out/**/*.js"
