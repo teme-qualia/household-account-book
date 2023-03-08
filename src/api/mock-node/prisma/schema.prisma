@@ -1,0 +1,102 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model m_user {
+  id String @id
+  userName String
+  password String?
+  category1s m_category1[]
+  category2s m_category2[]
+  shops m_shop[]
+  paymentTypes m_paymentType[]
+  buyers m_buyer[]
+  records t_record[]
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @default(now())
+}
+model m_category1 {
+  userId String
+  user m_user @relation(fields: [userId], references: [id])
+  category1Id Int
+  category1Name String
+  category2s m_category2[]
+  shops m_shop[]
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @default(now())
+
+  @@id([userId, category1Id])
+}
+model m_category2 {
+  userId String
+  user m_user @relation(fields: [userId], references: [id])
+  category1Id Int
+  category1 m_category1 @relation(fields: [userId, category1Id], references: [userId, category1Id])
+  category2Id Int
+  category2Name String
+  shops m_shop[]
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @default(now())
+
+  @@id([userId, category1Id, category2Id])
+}
+model m_shop {
+  userId String
+  user m_user @relation(fields: [userId], references: [id])
+  category1Id Int
+  category1 m_category1 @relation(fields: [userId, category1Id], references: [userId, category1Id])
+  category2Id Int
+  category2 m_category2 @relation(fields: [userId, category1Id, category2Id], references: [userId, category1Id, category2Id])
+  shopId Int
+  shopName String
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @default(now())
+
+  @@id([userId, category1Id, category2Id, shopId])
+}
+model m_paymentType {
+  userId String
+  user m_user @relation(fields: [userId], references: [id])
+  paymentTypeId Int
+  paymentTypeName String
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @default(now())
+
+  @@id([userId, paymentTypeId])
+}
+model m_buyer {
+  userId String
+  user m_user @relation(fields: [userId], references: [id])
+  buyerId Int
+  buyerName String
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @default(now())
+
+  @@id([userId, buyerId])
+}
+
+model t_record {
+  id String @id
+  userId String
+  user m_user @relation(fields: [userId], references: [id])
+  accountedMonth String
+  accountedAt DateTime
+  price Decimal
+  category1Id Int
+  category1Name String
+  category2Id Int?
+  category2Name String?
+  shopId Int?
+  shopName String?
+  paymentTypeId Int?
+  paymentTypeName String?
+  buyerId Int?
+  buyerName String?
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @default(now())
+}
