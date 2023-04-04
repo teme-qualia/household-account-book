@@ -1,22 +1,36 @@
-import { StatusBar } from 'expo-status-bar';
+import React from 'react';
+
+import { StatusBar, StatusBarStyle } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
+import { useColorScheme } from 'react-native';
 
-import { HomeScreen } from './src/components/pages/HomeScreen';
+import { ExpenseForm } from './src/components/pages/ExpenseScreen';
 import { SettingsScreen } from './src/components/pages/SettingsScreen'
 import { OtherScreen } from './src/components/pages/OtherScreen'
+
 const Tab = createMaterialBottomTabNavigator();
+const Stack = createStackNavigator();
 
 export default function App() {
+  const isDarkMode = useColorScheme() === 'dark';
+  const statusBarStyle: StatusBarStyle = isDarkMode ? 'light' : 'dark';
   return (
-    <NavigationContainer>
-      <Tab.Navigator>
-        <Tab.Screen name="Home" component={HomeScreen} />
-        <Tab.Screen name="Settings" component={SettingsScreen} />
-        <Tab.Screen name="otherscreen" component={OtherScreen} />
-      </Tab.Navigator>
-    </NavigationContainer>
+    <SafeAreaProvider>
+      <SafeAreaView style={{ flex: 1 , backgroundColor: isDarkMode ? 'black' : 'white' }}>
+        <StatusBar style={statusBarStyle} />
+        <NavigationContainer>
+          <Tab.Navigator>
+            <Tab.Screen name="ExpenseForm" component={ExpenseForm} />
+            <Tab.Screen name="Settings" component={SettingsScreen} />
+            <Tab.Screen name="Other" component={OtherScreen} />
+          </Tab.Navigator>
+        </NavigationContainer>
+      </SafeAreaView>
+    </SafeAreaProvider>
   );
 }
 const styles = StyleSheet.create({
@@ -27,3 +41,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+
+
+
