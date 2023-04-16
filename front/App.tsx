@@ -5,8 +5,9 @@ import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
+import { SafeAreaView } from 'react-native-safe-area-context'
 import { useColorScheme } from 'react-native';
+import { NativeBaseProvider } from "native-base";
 
 import { ExpenseForm } from './src/components/pages/ExpenseScreen';
 import { SettingsScreen } from './src/components/pages/SettingsScreen'
@@ -19,7 +20,7 @@ export default function App() {
   const isDarkMode = useColorScheme() === 'dark';
   const statusBarStyle: StatusBarStyle = isDarkMode ? 'light' : 'dark';
   return (
-    <SafeAreaProvider>
+    <NativeBaseProvider>
       <SafeAreaView style={{ flex: 1 , backgroundColor: isDarkMode ? 'black' : 'white' }}>
         <StatusBar style={statusBarStyle} />
         <NavigationContainer>
@@ -30,7 +31,7 @@ export default function App() {
           </Tab.Navigator>
         </NavigationContainer>
       </SafeAreaView>
-    </SafeAreaProvider>
+    </NativeBaseProvider>
   );
 }
 const styles = StyleSheet.create({
