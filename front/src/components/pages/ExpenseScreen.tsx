@@ -1,7 +1,8 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect, useState } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import AmountInput from '../molecules/AmountInout'
-import {TextArea,Box, FormControl, Input, Select, CheckIcon} from 'native-base'
+import {TextArea,Box, FormControl, Input, Select as NBSelect, CheckIcon} from 'native-base'
+import {Select, Item} from '../atoms/Select'
 
 
 
@@ -29,14 +30,12 @@ type ExpenseFormProps = {
 };
 
 type ExpenseFormState = {
-  category: {
-    majorCategory: string;
-    minorCategory: string;
-  };
   amount: number;
   memo?: string;
   date: string;
   purchaser?: string;
+  majorCategories: Item[],
+  minorCategories: Item[],
 };
 
 export default class ExpenseForm extends Component<
@@ -46,12 +45,33 @@ export default class ExpenseForm extends Component<
   constructor(props: ExpenseFormProps) {
     super(props);
     this.state = {
-      category: { majorCategory: '', minorCategory: '' },
       amount: 0,
       memo: undefined,
       date: '',
       purchaser: undefined,
+      majorCategories: [],
+      minorCategories: [],
     };
+  }
+
+  componentDidMount(){
+    // 大分類を初期化
+    const majorCategories= (() => {
+      return [
+        {label:'大分類1',value:'d1'},
+        {label:'大分類2',value:'d2'},
+      ]
+    })()
+    this.setState({ majorCategories });
+
+    // 小分類を初期化
+    const minorCategories = (()=>{
+      return [
+        {label:'小分類1',value:'s1'},
+        {label:'小分類2',value:'s2'},
+      ]
+    })()
+    this.setState({ minorCategories });
   }
 
   render() {
@@ -59,25 +79,17 @@ export default class ExpenseForm extends Component<
       <View style={styles.container}>
         <FormControl>
           <FormControl.Label>大分類</FormControl.Label>
-          <Select minWidth="200" accessibilityLabel="大分類" placeholder="大分類" _selectedItem={{
-            bg: "teal.600",
-            endIcon: <CheckIcon size={5} />
-          }} mt="1">
-            <Select.Item label="大分類１" value="d1" />
-            <Select.Item label="大分類２" value="d2" />
-            <Select.Item label="大分類３" value="d3" />
-        </Select>
+          <Select items={this.state.majorCategories}
+            selectedValue=''
+            placeholder='大分類'
+          />
         </FormControl>
         <FormControl>
           <FormControl.Label>小分類</FormControl.Label>
-          <Select minWidth="200" accessibilityLabel="小分類" placeholder="小分類" _selectedItem={{
-            bg: "teal.600",
-            endIcon: <CheckIcon size={5} />
-          }} mt="1">
-            <Select.Item label="小分類１" value="s1" />
-            <Select.Item label="小分類２" value="s2" />
-            <Select.Item label="小分類３" value="s3" />
-        </Select>
+          <Select items={this.state.minorCategories}
+          selectedValue=''
+          placeholder='小分類'
+          />
         </FormControl>
         <AmountInput
           label="金額"
