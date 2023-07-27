@@ -5,6 +5,11 @@
 *.so
 *.dylib
 
+
+# バックエンド
+back/node_modules/
+back/out/
+
 # Test binary, built with `go test -c`
 *.test
 
